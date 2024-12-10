@@ -18,49 +18,46 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   bool isDark = false;
   int _selectedIndex = 0;
+  late YoutubePlayerController _controller;
+  Video? _selectedVideo;
 
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
-  final videoURL =
-      'https://www.youtube.com/watch?v=tJGTWw_YcCM&list=RDtJGTWw_YcCM&start_radio=1&ab_channel=NCTDREAM';
-  late YoutubePlayerController _controller;
-  late List<Widget> _widgetOptions;
+  final List<Video> videos = [
+    Video(id: 'tJGTWw_YcCM', title: 'Video 1'),
+    Video(id: '9i64Oh5auU0', title: 'Video 2'),
+    // Tambahkan video lainnya di sini
+  ];
 
   @override
   void initState() {
     super.initState();
-    final videoID = YoutubePlayer.convertUrlToId(videoURL);
-
     _controller = YoutubePlayerController(
-      initialVideoId: videoID!,
+      initialVideoId: '',
       flags: const YoutubePlayerFlags(
-        autoPlay: true,
+        autoPlay: false,
         mute: false,
       ),
     );
-
-    _widgetOptions = <Widget>[
-      Center(
-        child: YoutubePlayer(
-          controller: _controller,
-          showVideoProgressIndicator: true,
-        ),
-      ),
-      const SearchScreen(),
-      Center(
-        child: Text(
-          'Index 2: School',
-          style: optionStyle,
-        ),
-      ),
-    ];
   }
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  void _playVideo(Video video) {
+    setState(() {
+      _selectedVideo = video;
+      _controller.load(video.id);
+    });
+  }
+
+  void _stopVideo() {
+    _controller.pause();
+    _controller.seekTo(Duration.zero);
   }
 
   @override
@@ -95,7 +92,89 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ],
         ),
-        body: _widgetOptions.elementAt(_selectedIndex),
+        body: _selectedIndex == 0
+            ? Column(
+                children: [
+                  if (_selectedVideo != null)
+                    Column(
+                      children: [
+                        YoutubePlayer(
+                          controller: _controller,
+                          showVideoProgressIndicator: true,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            IconButton(
+                              icon: Icon(Icons.play_arrow),
+                              onPressed: () {
+                                _controller.play();
+                              },
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.pause),
+                              onPressed: () {
+                                _controller.pause();
+                              },
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.stop),
+                              onPressed: () {
+                                _stopVideo();
+                              },
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: videos.length,
+                      itemBuilder: (context, index) {
+                        final video = videos[index];
+                        final thumbnailUrl =
+                            'https://img.youtube.com/vi/${video.id}/0.jpg';
+                        return GestureDetector(
+                          onTap: () => _playVideo(video),
+                          child: Container(
+                            margin: const EdgeInsets.all(8.0),
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: NetworkImage(thumbnailUrl),
+                                fit: BoxFit.cover,
+                              ),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            height: 200,
+                            child: Center(
+                              child: Text(
+                                video.title,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  backgroundColor: Colors.black54,
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              )
+            : _selectedIndex == 1
+                ? const SearchScreen()
+                : Center(
+                    child: Text(
+                      'Index 2: School',
+                      style: const TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
         bottomNavigationBar: CurvedNavigationBar(
           backgroundColor: backgroundColor,
           items: <Widget>[
@@ -110,6 +189,13 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+}
+
+class Video {
+  final String id;
+  final String title;
+
+  Video({required this.id, required this.title});
 }
 
 class SearchScreen extends StatelessWidget {
