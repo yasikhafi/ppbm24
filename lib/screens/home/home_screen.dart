@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:demo/screens/widget/calculator_screen.dart';
 import 'package:demo/screens/widget/convert_screen.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = 'HomeScreen';
@@ -21,21 +22,40 @@ class _HomeScreenState extends State<HomeScreen> {
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
-  static const List<Widget> _widgetOptions = <Widget>[
-    Center(
-      child: Text(
-        'Index 0: Home',
-        style: optionStyle,
+  final videoURL =
+      'https://www.youtube.com/watch?v=tJGTWw_YcCM&list=RDtJGTWw_YcCM&start_radio=1&ab_channel=NCTDREAM';
+  late YoutubePlayerController _controller;
+  late List<Widget> _widgetOptions;
+
+  @override
+  void initState() {
+    super.initState();
+    final videoID = YoutubePlayer.convertUrlToId(videoURL);
+
+    _controller = YoutubePlayerController(
+      initialVideoId: videoID!,
+      flags: const YoutubePlayerFlags(
+        autoPlay: true,
+        mute: false,
       ),
-    ),
-    SearchScreen(),
-    Center(
-      child: Text(
-        'Index 2: School',
-        style: optionStyle,
+    );
+
+    _widgetOptions = <Widget>[
+      Center(
+        child: YoutubePlayer(
+          controller: _controller,
+          showVideoProgressIndicator: true,
+        ),
       ),
-    ),
-  ];
+      const SearchScreen(),
+      Center(
+        child: Text(
+          'Index 2: School',
+          style: optionStyle,
+        ),
+      ),
+    ];
+  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -78,7 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
         body: _widgetOptions.elementAt(_selectedIndex),
         bottomNavigationBar: CurvedNavigationBar(
           backgroundColor: backgroundColor,
-          items: const <Widget>[
+          items: <Widget>[
             Icon(Icons.home, size: 30),
             Icon(Icons.search, size: 30),
             Icon(Icons.compare_arrows, size: 30),
