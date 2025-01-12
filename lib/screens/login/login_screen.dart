@@ -2,6 +2,7 @@ import 'package:demo/screens/core/components/default_button.dart';
 import 'package:demo/screens/core/constant/colors.dart';
 import 'package:demo/screens/core/constant/regex.dart';
 import 'package:demo/screens/core/constant/sizes.dart';
+import 'package:demo/screens/register/register_screen.dart';
 import 'package:demo/screens/routes/app_navbar.dart';
 import 'package:flutter/material.dart';
 
@@ -17,6 +18,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _pwdController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   @override
 
@@ -70,7 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ],
                   ),
                   sizedBox,
-                  Text('Login to your account',
+                  Text("Let's create an account!",
                       style: Theme.of(context)
                           .textTheme
                           .bodyMedium!
@@ -132,7 +135,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           sizedBox,
                           OutlinedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.pushNamed(
+                                  context, RegisterScreen.routeName);
+                            },
                             style: OutlinedButton.styleFrom(
                               side: const BorderSide(
                                   color: backgroundColor,
@@ -203,6 +209,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   TextFormField buildEmailField() {
     return TextFormField(
+      controller: _emailController,
       keyboardType: TextInputType.emailAddress,
       style: const TextStyle(
         color: textColorWhite,
@@ -234,6 +241,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   TextFormField buildPasswordField() {
     return TextFormField(
+      controller: _pwdController,
       obscureText: _passwordVisible,
       keyboardType: TextInputType.visiblePassword,
       style: const TextStyle(
