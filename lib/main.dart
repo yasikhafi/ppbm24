@@ -1,8 +1,8 @@
 import 'package:demo/screens/core/constant/colors.dart';
-import 'package:flutter/material.dart';
+import 'package:demo/screens/routes/app_routes.dart';
 import 'package:demo/screens/splash/splash_screen.dart';
+import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:demo/routes.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,6 +15,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Wizard Math',
       theme: ThemeData.light().copyWith(
         scaffoldBackgroundColor: backgroundColor,

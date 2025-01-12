@@ -1,9 +1,9 @@
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:demo/screens/core/constant/colors.dart';
 import 'package:demo/screens/core/constant/sizes.dart';
-import 'package:flutter/material.dart';
 import 'package:demo/screens/widget/calculator_screen.dart';
-import 'package:demo/screens/widget/convert_screen.dart';
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:demo/screens/widget/moneycv_screen.dart.dart';
+import 'package:flutter/material.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -106,19 +106,19 @@ class _HomeScreenState extends State<HomeScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             IconButton(
-                              icon: Icon(Icons.play_arrow),
+                              icon: const Icon(Icons.play_arrow),
                               onPressed: () {
                                 _controller.play();
                               },
                             ),
                             IconButton(
-                              icon: Icon(Icons.pause),
+                              icon: const Icon(Icons.pause),
                               onPressed: () {
                                 _controller.pause();
                               },
                             ),
                             IconButton(
-                              icon: Icon(Icons.stop),
+                              icon: const Icon(Icons.stop),
                               onPressed: () {
                                 _stopVideo();
                               },
@@ -166,10 +166,10 @@ class _HomeScreenState extends State<HomeScreen> {
               )
             : _selectedIndex == 1
                 ? const SearchScreen()
-                : Center(
+                : const Center(
                     child: Text(
                       'Index 2: School',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.bold,
                       ),
@@ -177,7 +177,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
         bottomNavigationBar: CurvedNavigationBar(
           backgroundColor: backgroundColor,
-          items: <Widget>[
+          items: const <Widget>[
             Icon(Icons.home, size: 30),
             Icon(Icons.search, size: 30),
             Icon(Icons.compare_arrows, size: 30),

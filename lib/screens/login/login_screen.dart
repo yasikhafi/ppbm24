@@ -1,8 +1,9 @@
-import 'package:flutter/material.dart';
+import 'package:demo/screens/core/components/default_button.dart';
 import 'package:demo/screens/core/constant/colors.dart';
 import 'package:demo/screens/core/constant/regex.dart';
 import 'package:demo/screens/core/constant/sizes.dart';
-import 'package:demo/screens/core/components/default_button.dart';
+import 'package:demo/screens/routes/app_navbar.dart';
+import 'package:flutter/material.dart';
 
 late bool _passwordVisible;
 
@@ -43,7 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset(
-                    'assets/images/logo.gif',
+                    'assets/images/logo.png',
                     height: 300,
                     width: 300,
                   ),
@@ -122,7 +123,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               if (_formKey.currentState!.validate()) {
                                 // Process data.
                                 Navigator.pushNamedAndRemoveUntil(context,
-                                    HomeScreen.routeName, (route) => false);
+                                    AppNavBar.routeName, (route) => false);
                               }
                             },
                             title: 'Login',

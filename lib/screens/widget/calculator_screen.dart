@@ -19,13 +19,14 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-            //create icon back
-            leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        )),
+          //create icon back
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ),
         body: Column(
           children: [
             Expanded(
