@@ -1,8 +1,8 @@
+import 'package:demo/routes/app_navbar.dart';
 import 'package:demo/screens/login/login_screen.dart';
 import 'package:demo/screens/pages/contact_screen.dart';
 import 'package:demo/screens/pages/message_screen.dart';
 import 'package:demo/screens/register/register_screen.dart';
-import 'package:demo/screens/routes/app_navbar.dart';
 import 'package:demo/screens/splash/splash_screen.dart';
 import 'package:demo/screens/widget/calculator_screen.dart';
 import 'package:demo/screens/widget/moneycv_screen.dart.dart';
@@ -23,6 +23,6 @@ Map<String, WidgetBuilder> routes = {
   TemperatureConverterScreen.routeName: (context) =>
       const TemperatureConverterScreen(),
   VideoBased.routeName: (context) => const VideoBased(),
-  MessageScreen.routeName: (context) => const MessageScreen(),
+  MessageScreen.routeName: (context) => MessageScreen(),
   ContactScreen.routeName: (context) => const ContactScreen(),
 };

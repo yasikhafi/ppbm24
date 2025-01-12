@@ -2,16 +2,16 @@ import 'package:demo/screens/core/components/default_button.dart';
 import 'package:demo/screens/core/constant/colors.dart';
 import 'package:demo/screens/core/constant/regex.dart';
 import 'package:demo/screens/core/constant/sizes.dart';
-import 'package:demo/screens/login/login_screen.dart';
-import 'package:demo/screens/routes/app_navbar.dart';
+import 'package:demo/services/auth/auth_service.dart';
 import 'package:flutter/material.dart';
 
 late bool _passwordVisible;
 
 class RegisterScreen extends StatefulWidget {
   static const String routeName = 'RegisterScreen';
+  final void Function()? onPressed;
 
-  const RegisterScreen({super.key});
+  const RegisterScreen({super.key, this.onPressed});
 
   @override
   _RegisterScreenState createState() => _RegisterScreenState();
@@ -22,7 +22,54 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _pwdController = TextEditingController();
   final TextEditingController _confirmpwdController = TextEditingController();
 
-  final _formKey = GlobalKey<FormState>();
+  void Function()? onPressed;
+
+  void register(BuildContext context) async {
+    // get auth service
+    final auth = AuthService();
+
+    if (_pwdController.text == _confirmpwdController.text) {
+      try {
+        auth.createUserWithEmailAndPassword(
+            _emailController.text, _pwdController.text);
+        // ignore: use_build_context_synchronously
+        // Navigator.pushNamedAndRemoveUntil(
+        //     context, AppNavBar.routeName, (route) => false);
+      } catch (e) {
+        showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+                  title: const Text('Error'),
+                  content: Text(e.toString()),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text('OK'),
+                    ),
+                  ],
+                ));
+      }
+    } else {
+      showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+                title: const Text('Error'),
+                content: const Text('Passwords do not match'),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('OK'),
+                  ),
+                ],
+              ));
+    }
+  }
+
+  final formKey = GlobalKey<FormState>();
   @override
 
   /// Initializes [_passwordVisible] to true, so that the password is initially
@@ -98,7 +145,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 child: Column(
                   children: [
                     Form(
-                      key: _formKey,
+                      key: formKey,
                       child: Column(
                         children: [
                           sizedBox,
@@ -108,31 +155,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           sizedBox,
                           buildConfirmPasswordField(),
                           sizedBox,
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              TextButton(
-                                onPressed: () {},
-                                child: const Text(
-                                  'Forgot password?',
-                                  style: TextStyle(
-                                    color: textColorWhite,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          sizedBox,
                           DefaultButton(
-                            onPressed: () {
-                              if (_formKey.currentState!.validate()) {
-                                // Process data.
-                                Navigator.pushNamedAndRemoveUntil(context,
-                                    AppNavBar.routeName, (route) => false);
-                              }
-                            },
+                            onPressed: () => register(context),
                             title: 'Register',
                             buttoncolor: otherColor,
                             textcolor: textColorWhite,
@@ -179,9 +203,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       height: kDefaultPadding * 2,
                     ),
                     OutlinedButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, LoginScreen.routeName);
-                      },
+                      onPressed: onPressed,
                       style: OutlinedButton.styleFrom(
                         side: const BorderSide(
                             color: backgroundColor,
@@ -213,7 +235,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   TextFormField buildConfirmPasswordField() {
     return TextFormField(
-      controller: _pwdController,
+      controller: _confirmpwdController,
       obscureText: _passwordVisible,
       keyboardType: TextInputType.visiblePassword,
       style: const TextStyle(

@@ -1,17 +1,23 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:demo/routes/app_navbar.dart';
 import 'package:demo/screens/core/components/default_button.dart';
 import 'package:demo/screens/core/constant/colors.dart';
 import 'package:demo/screens/core/constant/regex.dart';
 import 'package:demo/screens/core/constant/sizes.dart';
 import 'package:demo/screens/register/register_screen.dart';
-import 'package:demo/screens/routes/app_navbar.dart';
+import 'package:demo/services/auth/auth_service.dart';
 import 'package:flutter/material.dart';
 
 late bool _passwordVisible;
 
 class LoginScreen extends StatefulWidget {
   static const String routeName = 'LoginScreen';
+  final Function()? onPressed;
 
-  const LoginScreen({super.key});
+  const LoginScreen({
+    super.key,
+    this.onPressed,
+  });
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -20,6 +26,43 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _pwdController = TextEditingController();
+
+  void Function()? onPressed;
+
+  // login method
+  void login(BuildContext context) async {
+    // auth service
+    final authService = AuthService();
+
+    // try login
+    try {
+      await authService.signInWithEmailAndPassword(
+        _emailController.text,
+        _pwdController.text,
+      );
+      // ignore: use_build_context_synchronously
+      // Navigator.pushNamedAndRemoveUntil(
+      //     context, AppNavBar.routeName, (route) => false);
+    }
+    //catch any error
+    catch (e) {
+      showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+                title: const Text('Error'),
+                content: Text(e.toString()),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('OK'),
+                  ),
+                ],
+              ));
+    }
+  }
+
   final _formKey = GlobalKey<FormState>();
   @override
 
@@ -123,11 +166,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           sizedBox,
                           DefaultButton(
                             onPressed: () {
-                              if (_formKey.currentState!.validate()) {
-                                // Process data.
-                                Navigator.pushNamedAndRemoveUntil(context,
-                                    AppNavBar.routeName, (route) => false);
-                              }
+                              Navigator.pushNamed(context, AppNavBar.routeName);
                             },
                             title: 'Login',
                             buttoncolor: otherColor,

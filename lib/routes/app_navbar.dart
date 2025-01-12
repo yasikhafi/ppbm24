@@ -3,6 +3,7 @@ import 'package:demo/screens/core/constant/colors.dart';
 import 'package:demo/screens/pages/contact_screen.dart';
 import 'package:demo/screens/pages/home_screen.dart';
 import 'package:demo/screens/pages/message_screen.dart';
+// import 'package:demo/screens/pages/message_screen.dart';
 import 'package:demo/screens/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -57,7 +58,7 @@ class _AppNavBarState extends State<AppNavBar> {
         widget = const HomeScreen();
         break;
       case 1:
-        widget = const MessageScreen();
+        widget = MessageScreen();
         break;
       case 2:
         widget = const ContactScreen();

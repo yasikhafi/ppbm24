@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "69858186403",
-    "project_id": "wizardmath-ee676",
-    "storage_bucket": "wizardmath-ee676.firebasestorage.app"
+    "project_number": "919508654566",
+    "project_id": "wizardmath-50907",
+    "storage_bucket": "wizardmath-50907.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:69858186403:android:172b2959403215ee7b9b16",
+        "mobilesdk_app_id": "1:919508654566:android:8364b0036a30d7f7d49e27",
         "android_client_info": {
-          "package_name": "com.flutter.demo"
+          "package_name": "com.example.demo"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDbrdCgHhc0d5cwocwqjypqDR6DW0-0gbM"
+          "current_key": "AIzaSyDLwDyt4SU6kJ3w9XEGIqDXu9otuoshMrE"
         }
       ],
       "services": {
